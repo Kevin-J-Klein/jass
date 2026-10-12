@@ -19,10 +19,19 @@ Tests richten sich danach. Wo etwas fehlt oder unklar ist, wird gefragt, nicht g
 
 | Deutschschweizer Karten | Französische Karten |
 | --- | --- |
-| Eicheln | TODO |
-| Rosen | TODO |
-| Schellen | TODO |
-| Schilten | TODO |
+| Eicheln | Ecken ♦ |
+| Rosen | Herz ♥ |
+| Schellen | Kreuz ♣ |
+| Schilten | Schaufeln ♠ |
+
+| Deutschschweizer Karten | Französische Karten |
+| --- | --- |
+| Ass | Ass |
+| König | König |
+| Ober | Dame |
+| Under | Bube |
+| Banner | 10 |
+| 9,8,7,6 | 9,8,7,6 |
 
 Werte pro Farbe, von hoch nach tief (ohne Trumpf): Ass, König, Ober, Under, Banner, 9, 8, 7, 6
 
