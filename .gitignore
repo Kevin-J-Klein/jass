@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets: nie committen
+.env
+.env.*
+!.env.example
+
+# Node (Frontend, ab Phase 4)
+node_modules/
+dist/
+
+# Editor und System
+.vscode/
+.idea/
+.DS_Store

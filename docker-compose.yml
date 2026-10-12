@@ -1,0 +1,16 @@
+# Startet alle Teile des Projekts lokal mit einem Befehl:
+#   docker compose up --build
+# Stoppen mit Ctrl+C, aufräumen mit:
+#   docker compose down
+#
+# Funktioniert erst, wenn du die Lücken im backend/Dockerfile ausgefüllt hast.
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      # <Port auf deinem Mac>:<Port im Container>
+      - "8000:8000"
+    restart: unless-stopped
+
+  # Ab Phase 4 kommt hier das Frontend dazu.

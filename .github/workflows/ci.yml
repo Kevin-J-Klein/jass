@@ -1,0 +1,98 @@
+# =============================================================================
+# CI-Pipeline: prüft jeden Pull Request und jeden Push auf main.
+#
+# GitHub Actions liest alle .yml-Dateien in .github/workflows/ und führt sie
+# aus. Aufbau: Ein Workflow hat Auslöser (on), Jobs laufen auf einer frischen
+# virtuellen Maschine (runs-on), und jeder Job besteht aus Schritten (steps).
+#
+# Deine Aufgabe: Fülle alle Stellen mit "TODO" aus.
+# Testen: Pushe einen Branch, öffne einen Pull Request und schau im Tab
+#         "Actions" auf GitHub zu. Rot ist am Anfang normal, lies die Logs!
+#
+# Achtung bei YAML: Einrückung zählt, und zwar nur mit Leerzeichen, nie Tabs.
+# =============================================================================
+
+name: CI
+
+# --- Auslöser -----------------------------------------------------------------
+# Wann soll der Workflow laufen?
+#   1. bei jedem Pull Request
+#   2. bei jedem Push auf den Branch main
+# Tipp: Die Schlüsselwörter heissen "pull_request" und "push".
+#       Beim Push kannst du mit "branches: [...]" einschränken.
+on:
+  TODO:
+  TODO:
+    branches: [TODO]
+
+# Der Workflow darf den Code nur lesen, nicht verändern. Minimale Rechte
+# sind gute Praxis, gerade bei einem öffentlichen Repo.
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Code prüfen (Linting und Tests)
+  # ---------------------------------------------------------------------------
+  test:
+    name: Lint und Tests
+    # Auf welchem Betriebssystem soll der Job laufen?
+    # Tipp: Die übliche Wahl ist die neueste Ubuntu-Version, auf GitHub "ubuntu-latest".
+    runs-on: TODO
+
+    # Alle "run"-Befehle in diesem Job laufen im Ordner backend/
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      # Die virtuelle Maschine ist leer. Zuerst muss der Code aus dem Repo
+      # ausgecheckt werden. Dafür gibt es eine fertige Action von GitHub.
+      # Tipp: "actions/checkout", aktuelle Hauptversion auf github.com/actions/checkout
+      - name: Code auschecken
+        uses: TODO
+
+      - name: Python einrichten
+        uses: actions/setup-python@v7
+        with:
+          # Welche Python-Version? Muss zum Dockerfile passen.
+          python-version: "TODO"
+          # Spart Zeit: pip-Pakete zwischen Läufen zwischenspeichern
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements-dev.txt
+
+      # Tipp: Die Befehle stehen in CLAUDE.md unter "Befehle".
+      - name: Linting (ruff)
+        run: TODO
+
+      - name: Formatierung prüfen (ruff format)
+        run: TODO
+
+      - name: Tests (pytest)
+        run: TODO
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Docker-Image bauen
+  # Wir bauen das Image nur, um Build-Fehler früh zu sehen. Gepusht und
+  # deployt wird später in einem eigenen CD-Workflow.
+  # ---------------------------------------------------------------------------
+  docker:
+    name: Docker-Build
+    runs-on: ubuntu-latest
+
+    # Dieser Job soll erst starten, wenn die Tests grün sind.
+    # Sonst bauen wir ein Image aus kaputtem Code.
+    # Tipp: Das Schlüsselwort heisst "needs" und nimmt den Namen eines Jobs.
+    TODO: TODO
+
+    steps:
+      - name: Code auschecken
+        uses: TODO
+
+      # Baut das Image aus backend/Dockerfile.
+      # Tipp: docker build -t <name> <ordner mit dem Dockerfile>
+      - name: Image bauen
+        run: TODO
