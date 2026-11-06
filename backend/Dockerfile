@@ -18,7 +18,7 @@
 # schlanken ("slim") Variante, das spart mehrere hundert MB.
 # Tipp: Suche auf hub.docker.com nach dem offiziellen "python"-Image und
 #       schau dir die Tags an.
-FROM TODO
+FROM python:3.12-slim
 
 
 # --- 2. Umgebungsvariablen ----------------------------------------------------
@@ -32,7 +32,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # --- 3. Arbeitsverzeichnis ----------------------------------------------------
 # Alle folgenden Befehle laufen in diesem Ordner im Container.
 # Tipp: Ein üblicher Name ist /app
-WORKDIR TODO
+WORKDIR /code
 
 
 # --- 4. Abhängigkeiten installieren ------------------------------------------
@@ -40,9 +40,9 @@ WORKDIR TODO
 # Frage an dich: Warum nicht gleich den ganzen Code kopieren?
 # (Antwort steht ganz unten in dieser Datei.)
 #
-# Tipp: COPY <quelle auf deinem Mac> <ziel im Container>
-#       Pfade auf deinem Mac sind relativ zum Build-Kontext, hier ./backend
-COPY TODO TODO
+# COPY <quelle auf deinem Mac> <ziel im Container>
+#       . = steht für das aktuelle WORKDIR = /code/
+COPY requirements.txt . 
 
 # --no-cache-dir: pip soll keinen Download-Cache im Image liegen lassen
 RUN pip install --no-cache-dir -r requirements.txt
@@ -51,7 +51,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # --- 5. Eigenen Code kopieren -------------------------------------------------
 # Jetzt erst den Anwendungscode. Wir brauchen nur den Ordner "app",
 # nicht die Tests.
-COPY TODO TODO
+COPY app ./app/
 
 
 # --- 6. Nicht als root laufen -------------------------------------------------
@@ -64,8 +64,7 @@ USER appuser
 
 # --- 7. Port dokumentieren ----------------------------------------------------
 # EXPOSE öffnet nichts, es dokumentiert nur, auf welchem Port die App horcht.
-# Welchen Port nutzt uvicorn bei uns? (siehe CMD unten)
-EXPOSE TODO
+EXPOSE 8000
 
 
 # --- 8. Startbefehl -----------------------------------------------------------
@@ -74,7 +73,7 @@ EXPOSE TODO
 # INNERHALB des Containers erreichbar, nicht von deinem Mac aus.
 #
 # Tipp: Die App heisst "app" und liegt in app/main.py, also "app.main:app"
-CMD ["uvicorn", "TODO", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app/main.py:app", "--host", "0.0.0.0", "--port", "8000"]
 
 
 # =============================================================================
