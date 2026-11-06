@@ -73,7 +73,7 @@ EXPOSE 8000
 # INNERHALB des Containers erreichbar, nicht von deinem Mac aus.
 #
 # Tipp: Die App heisst "app" und liegt in app/main.py, also "app.main:app"
-CMD ["uvicorn", "app/main.py:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 
 # =============================================================================
