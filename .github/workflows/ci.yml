@@ -4,29 +4,18 @@
 # GitHub Actions liest alle .yml-Dateien in .github/workflows/ und führt sie
 # aus. Aufbau: Ein Workflow hat Auslöser (on), Jobs laufen auf einer frischen
 # virtuellen Maschine (runs-on), und jeder Job besteht aus Schritten (steps).
-#
-# Deine Aufgabe: Fülle alle Stellen mit "TODO" aus.
-# Testen: Pushe einen Branch, öffne einen Pull Request und schau im Tab
-#         "Actions" auf GitHub zu. Rot ist am Anfang normal, lies die Logs!
-#
-# Achtung bei YAML: Einrückung zählt, und zwar nur mit Leerzeichen, nie Tabs.
 # =============================================================================
 
 name: CI
 
 # --- Auslöser -----------------------------------------------------------------
-# Wann soll der Workflow laufen?
-#   1. bei jedem Pull Request
-#   2. bei jedem Push auf den Branch main
-# Tipp: Die Schlüsselwörter heissen "pull_request" und "push".
-#       Beim Push kannst du mit "branches: [...]" einschränken.
 on:
-  TODO:
-  TODO:
-    branches: [TODO]
+  pull_request:
+  push:
+    branches: 
+      - main
 
-# Der Workflow darf den Code nur lesen, nicht verändern. Minimale Rechte
-# sind gute Praxis, gerade bei einem öffentlichen Repo.
+# Der Workflow darf den Code nur lesen, nicht verändern.
 permissions:
   contents: read
 
@@ -36,9 +25,8 @@ jobs:
   # ---------------------------------------------------------------------------
   test:
     name: Lint und Tests
-    # Auf welchem Betriebssystem soll der Job laufen?
-    # Tipp: Die übliche Wahl ist die neueste Ubuntu-Version, auf GitHub "ubuntu-latest".
-    runs-on: TODO
+  
+    runs-on: ubuntu-latest
 
     # Alle "run"-Befehle in diesem Job laufen im Ordner backend/
     defaults:
@@ -50,15 +38,14 @@ jobs:
       # ausgecheckt werden. Dafür gibt es eine fertige Action von GitHub.
       # Tipp: "actions/checkout", aktuelle Hauptversion auf github.com/actions/checkout
       - name: Code auschecken
-        uses: TODO
+        uses: actions/checkout@v7
 
       - name: Python einrichten
         uses: actions/setup-python@v7
         with:
-          # Welche Python-Version? Muss zum Dockerfile passen.
-          python-version: "TODO"
+          python-version: "3.12"
           # Spart Zeit: pip-Pakete zwischen Läufen zwischenspeichern
-          cache: pip
+          cache: pip 
           cache-dependency-path: backend/requirements-dev.txt
 
       - name: Abhängigkeiten installieren
@@ -66,17 +53,17 @@ jobs:
 
       # Tipp: Die Befehle stehen in CLAUDE.md unter "Befehle".
       - name: Linting (ruff)
-        run: TODO
+        run: ruff check .
 
       - name: Formatierung prüfen (ruff format)
-        run: TODO
+        run: ruff format --check .
 
       - name: Tests (pytest)
-        run: TODO
+        run: pytest
 
   # ---------------------------------------------------------------------------
   # Job 2: Docker-Image bauen
-  # Wir bauen das Image nur, um Build-Fehler früh zu sehen. Gepusht und
+  # Um Build-Fehler früh zu sehen. Gepusht und
   # deployt wird später in einem eigenen CD-Workflow.
   # ---------------------------------------------------------------------------
   docker:
@@ -85,14 +72,13 @@ jobs:
 
     # Dieser Job soll erst starten, wenn die Tests grün sind.
     # Sonst bauen wir ein Image aus kaputtem Code.
-    # Tipp: Das Schlüsselwort heisst "needs" und nimmt den Namen eines Jobs.
-    TODO: TODO
+    
+    needs: test #der Wert der Name des Jobs, auf den gewartet wird
 
     steps:
       - name: Code auschecken
-        uses: TODO
+        uses: actions/checkout@v7
 
       # Baut das Image aus backend/Dockerfile.
-      # Tipp: docker build -t <name> <ordner mit dem Dockerfile>
       - name: Image bauen
-        run: TODO
+        run: docker build -t jass-backend ./backend
